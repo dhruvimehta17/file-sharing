@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enter Decryption Key</title>
+</head>
+<body>
+  <h2>Enter Decryption Key</h2>
+  <form action="/secure/decrypt" method="POST">
+    <input type="hidden" name="customLink" value="" id="linkField">
+    <input type="text" name="key" placeholder="Enter key" required>
+    <button type="submit">Access Message</button>
+  </form>
+
+  <script>
+    const pathParts = window.location.pathname.split('/');
+    const link = pathParts[pathParts.length - 1];
+    document.getElementById("linkField").value = link;
+  </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload File or Paste Text</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      width: 400px;
+      text-align: center;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.05);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-size: 14px;
+      margin: 10px 0 5px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input[type="file"], textarea {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      text-align: left;
+      display: none;
+    }
+
+    .secure-btn {
+      margin-top: 30px;
+      background: #007bff;
+      font-weight: bold;
+      cursor: pointer;
+      width: 350px;
+    }
+
+    .secure-btn:hover {
+      background: #0056b3;
+    }
+
+    #secureAccessForm {
+      display: none;
+    }
+
+    #result {
+      margin-top: 10px;
+      color: #fff;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="formTitle">Upload File or Paste Text</h2>
+
+    <!-- Upload Form -->
+    <div id="uploadForm">
+      <label for="fileInput">Choose a file (or)</label>
+      <input type="file" id="fileInput">
+
+      <label for="textInput">Paste text below (Max: 5000 words)</label>
+      <textarea id="textInput" rows="4" placeholder="Paste your text here..." oninput="checkWordLimit()"></textarea>
+      <span class="error" id="wordLimitError">Text exceeds 5000 words limit!</span>
+
+      <label for="customLink">Custom Link *</label>
+      <input type="text" id="customLink" placeholder="Enter custom link" required>
+
+      <label for="deleteAfter">Delete After *</label>
+      <select id="deleteAfter">
+        <option value="">Select an option</option>
+        <option value="1min">1 Minute</option>
+        <option value="10min">10 Minutes</option>
+        <option value="1hr">1 Hour</option>
+        <option value="3hrs">3 Hours</option>
+        <option value="24hrs">24 Hours</option>
+        <option value="7days">7 Days</option>
+        <option value="1month">1 Month</option>
+      </select>
+      <span class="error" id="deleteAfterError">Please select a delete time!</span>
+
+      <label for="key">Enter Key *</label>
+      <input type="text" id="key" placeholder="Enter Key">
+      <span class="error" id="keyError">Key is required</span>
+
+      <button onclick="uploadFile()">Crypt and Upload</button>
+    </div>
+
+    <!-- Secure Access Form -->
+    <div id="secureAccessForm">
+      <label for="accessKey">Enter Key to Access *</label>
+      <input type="text" id="accessKey" placeholder="Enter Key">
+      <button id="decryptBtn">Access Message</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <button class="secure-btn" onclick="window.location.href='dc.html'">Want to Send Normal Message Instead</button>
+
+  <script>
+    function checkWordLimit() {
+      const text = document.getElementById("textInput").value;
+      const wordCount = text.trim().split(/\s+/).length;
+      const errorElement = document.getElementById("wordLimitError");
+
+      errorElement.style.display = (text.trim() === "" || wordCount <= 5000) ? "none" : "block";
+    }
+
+    function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const textInput = document.getElementById("textInput").value.trim();
+      const customLink = document.getElementById("customLink").value.trim();
+      const deleteAfter = document.getElementById("deleteAfter").value;
+      const key = document.getElementById("key").value.trim();
+
+      const wordLimitError = document.getElementById("wordLimitError");
+      const deleteAfterError = document.getElementById("deleteAfterError");
+      const keyError = document.getElementById("keyError");
+
+      let isValid = true;
+
+      if (fileInput.files.length === 0 && textInput === "") {
+        alert("Please upload a file or enter text!");
+        isValid = false;
+      }
+
+      if (textInput !== "") {
+        const wordCount = textInput.split(/\s+/).length;
+        wordLimitError.style.display = wordCount > 5000 ? "block" : "none";
+        if (wordCount > 5000) isValid = false;
+      }
+
+      if (customLink === "") {
+        alert("Custom Link is required!");
+        isValid = false;
+      }
+
+      keyError.style.display = key === "" ? "block" : "none";
+      if (key === "") isValid = false;
+
+      deleteAfterError.style.display = deleteAfter === "" ? "block" : "none";
+      if (deleteAfter === "") isValid = false;
+
+      if (!isValid) return;
+
+      const formData = new FormData();
+      formData.append("customLink", customLink);
+      formData.append("deleteAfter", deleteAfter);
+      formData.append("key", key);
+
+      if (fileInput.files.length > 0) {
+        formData.append("file", fileInput.files[0]);
+      } else {
+        formData.append("textContent", textInput);
+      }
+
+      fetch("/secure-upload", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(msg => alert(msg))
+      .catch(err => alert("Error uploading: " + err.message));
+    }
+
+    // If accessing a secure message
+    document.addEventListener("DOMContentLoaded", () => {
+      const pathParts = window.location.pathname.split('/');
+      if (pathParts[1] === 'secure' && pathParts[2]) {
+        document.getElementById("formTitle").textContent = "Secure Message Access";
+        document.getElementById("uploadForm").style.display = "none";
+        document.getElementById("secureAccessForm").style.display = "block";
+
+        const customLink = pathParts[2];
+        document.getElementById("decryptBtn").onclick = () => {
+            const key = document.getElementById("accessKey").value.trim();
+            if (!key) return alert("Please enter a key!");
+
+            const customLink = window.location.pathname.split('/')[2]; // Grab the ID from URL
+            fetch(`/secure-access`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customLink, key })
+            })
+            .then(res => {
+                if (res.status === 200) return res.blob();
+                return res.text().then(text => { throw new Error(text); });
+            })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = customLink;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(err => {
+                document.getElementById("result").textContent = err.message;
+            });
+            };
+      }
+    });
+  </script>
+</body>
+</html>
