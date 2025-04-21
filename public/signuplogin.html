@@ -127,7 +127,10 @@
       <textarea id="textInput" rows="4" placeholder="Paste your text here..." oninput="checkWordLimit()"></textarea>
       <span class="error" id="wordLimitError">Text exceeds 5000 words limit!</span>
 
-      <label for="customLink">Custom Link *</label>
+      <div class="input-wrapper">
+        <span class="prefix">secureshare.in/secure/</span>
+        <input type="text" id="customLink" placeholder="Enter custom link" required>
+      </div>
       <input type="text" id="customLink" placeholder="Enter custom link" required>
 
       <label for="deleteAfter">Delete After *</label>
