@@ -116,34 +116,54 @@
     .input-wrapper {
         position: relative;
         width: 100%;
-        }
+    }
 
-        .input-wrapper {
-            position: relative;
-            width: 100%;
-        }
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+    }
 
-        .input-wrapper .prefix {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            color: rgba(0, 0, 0, 0.85);
-            font-size: 16px;
-            pointer-events: none;
-            font-family: inherit;
-        }
+    .input-wrapper .prefix {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 16px;
+        pointer-events: none;
+        font-family: inherit;
+    }
 
-        .input-wrapper input {
-            padding-left: 175px; 
-            height: 40px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-        }
+    .input-wrapper input {
+        padding-left: 175px; 
+        height: 40px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        text-align: center;
+        width: 100%;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        z-index: 100;
+    }
+
+    .footer a {
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -301,5 +321,10 @@
       }
     });
   </script>
+
+<footer class="footer">
+  Made with ❤️ by <a href="https://www.ruvee.in" target="_blank">Dhruvi Mehta</a>
+</footer>
+
 </body>
 </html>

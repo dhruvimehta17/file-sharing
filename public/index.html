@@ -221,6 +221,26 @@
             outline: none;
         }
 
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            z-index: 100;
+        }
+
+        .footer a {
+            color: #00aaff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
@@ -545,6 +565,11 @@
         // Attach functions to global scope
         window.handleSignup = handleSignup;
         window.handleLogin = handleLogin;
-      </script>      
+      </script>    
+      
+      <footer class="footer">
+        Made with ❤️ by <a href="https://www.ruvee.in" target="_blank">Dhruvi Mehta</a>
+    </footer>
+    
 </body>
 </html>
